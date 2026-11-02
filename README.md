@@ -54,6 +54,8 @@ go vet ./...
 npm --prefix apps/web run typecheck
 npm --prefix apps/web run build
 python3 scripts/check_foundation.py
+python3 scripts/check_agent_skills.py
+python3 -m unittest discover -s scripts/agents -p 'test_*.py'
 python3 -m unittest discover -s scripts/probes -p 'test_*.py'
 git diff --check
 ```
@@ -62,6 +64,7 @@ Go uses only its standard library. Frontend packages are pinned in a lockfile. S
 
 ## Documentation
 
+- [Agent operating rules, skills and SOPs](docs/agents/skills.md)
 - [Live Fleet preview: run, connect, security and API](docs/architecture/live-fleet.md)
 - [Product scope and roadmap](docs/product/strategy.md)
 - [Architecture and domain boundaries](docs/architecture/overview.md)

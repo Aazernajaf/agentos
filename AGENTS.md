@@ -4,6 +4,14 @@
 
 These instructions apply throughout AgentOS unless a deeper file adds stricter local guidance. Read README.md and the relevant architecture/ADR documents before changing behavior. The repository contains foundation documentation, synthetic feasibility probes and a read-only Live Fleet preview; planned components must not be described as implemented.
 
+## Task continuity and skills
+
+Read [the agent operating policy](docs/agents/operating-policy.md) for multi-step work and use [the skill catalog](docs/agents/skills.md) to select the smallest relevant workflow. Before using a skill, read its SKILL.md and its own SOP.md. Skills never expand authorization.
+
+Answer intermediate questions briefly and continue the active authorized assignment. Apply corrections without restarting unrelated work. For separate ideas, suggest another chat when useful, retain the idea as pending and preserve the active goal; never create a chat or delegate merely because an idea was mentioned. Explicit stop/pause/cancel and priority changes always take precedence. A blocking approval holds dependent work, not genuinely independent authorized progress.
+
+Inspect completed work and revision-bound evidence before repeating it. Re-run only affected checks after a meaningful change or failure. Keep live-probe budgets across retries and do not silently reset them by starting a new process. See the operating policy for the full message/permission decision table.
+
 ## Working rules
 
 1. Observe: inspect the current branch, working tree, existing code, local instructions, and relevant contracts. Preserve unrelated user changes.
@@ -29,6 +37,8 @@ go vet ./...
 npm --prefix apps/web run typecheck
 npm --prefix apps/web run build
 python3 scripts/check_foundation.py
+python3 scripts/check_agent_skills.py
+python3 -m unittest discover -s scripts/agents -p 'test_*.py'
 python3 -m unittest discover -s scripts/probes -p 'test_*.py'
 git diff --check
 ```

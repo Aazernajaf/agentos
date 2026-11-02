@@ -17,6 +17,10 @@ Status: direction accepted for planning; features unimplemented. The latest sequ
 
 These are scope milestones, not delivery dates. First useful observation within five minutes is a usability target, not a measured result. Windows assessment, hosted multi-user mode, Kubernetes, marketplace, AI scheduling, mandatory project connectors, and universal session takeover are outside initial scope.
 
+## Additional provider queue
+
+Antigravity CLI is a requested feasibility candidate. Verify its exact distribution/version and interfaces before adding scope or advertising support. Existing v0.1 Codex/Claude targets remain distinct from that unverified candidate.
+
 ## Metrics with explicit meaning
 
 - Capacity utilization = active execution slots / configured parallel slots. Undefined if capacity is unknown or zero; not model intelligence or CPU usage.
