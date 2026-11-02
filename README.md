@@ -56,6 +56,8 @@ go run ./cmd/agentos-policy-demo
 
 This executable tests real gate paths with synthetic in-memory effects only; it performs no migration, provider control or model call. [Trust boundary, integration and limitations](docs/architecture/governance.md).
 
+An experimental [owned provider check harness](docs/architecture/adapter-gates.md) connects these gates to Codex/Claude CLI runners. Offline gates and fixed synthetic goals pass for both pinned provider versions. This is not general coding-task acceptance. Fleet remains read-only. OpenClaw stays optional.
+
 ## Development checks
 
 ```sh

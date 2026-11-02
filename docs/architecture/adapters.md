@@ -1,5 +1,7 @@
 # Adapter feasibility
 
+An experimental [owned-check gate integration](adapter-gates.md) has offline process-boundary tests and passing fixed synthetic goals for Codex 0.150.1 and Claude Code 2.1.316. This is not general supported provider control or coding-task acceptance.
+
 Updated 2026-11-02. The original surface inspection has been followed by scoped synthetic experiments; see [executed results](adapter-experiments.md) and [sanitized evidence](adapter-probe-results.json). No production adapter is implemented. Existing private sessions were not inspected or controlled.
 
 ## Evidence and limits
