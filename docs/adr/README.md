@@ -8,5 +8,6 @@
 | [002](002-adapters-and-events.md) | Accepted direction | Capability-aware adapters and normalized events |
 | [003](003-outcomes-and-evidence.md) | Accepted direction | Separate activity, workload, progress, acceptance |
 | [004](004-storage-and-licensing.md) | Proposed / unresolved | Storage implementation and license selection |
+| [005](005-read-only-fleet-preview.md) | Implemented preview | Bounded read-only local Fleet slice |
 
 New ADRs should state context, decision/status, alternatives, consequences, evidence, and unresolved questions. Supersede rather than silently rewrite historical decisions.

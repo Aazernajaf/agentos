@@ -78,6 +78,8 @@ class StreamSafetyTests(unittest.TestCase):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text('# Synthetic document\n')
             (root / '._README.md').write_bytes(b'\x00\xff\x01')
+            (root / 'node_modules').mkdir()
+            (root / 'node_modules' / 'README.md').write_bytes(b'\xff')
             self.assertEqual(module.check(root)[1], [])
             (root / 'README.md').write_text('[broken](missing.md)\n')
             self.assertTrue(module.check(root)[1])

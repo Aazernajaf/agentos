@@ -1,6 +1,6 @@
 # Architecture overview
 
-Status: accepted direction, not implementation. See [ADRs](../adr/README.md).
+Status: architecture direction; the [read-only Fleet preview](live-fleet.md) implements the first in-memory slice, with the wider architecture still planned. See [ADRs](../adr/README.md).
 
 ## Shape and boundaries
 

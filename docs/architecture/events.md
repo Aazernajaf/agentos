@@ -1,6 +1,6 @@
 # Event contract draft v0
 
-Status: design sketch, not a stable API or database schema. No migrations are authorized by this document.
+Status: design sketch, not a stable API or database schema. The [Fleet preview](live-fleet.md) implements a narrower metadata projection and full-snapshot stream; this draft journal/envelope is not yet implemented. No migrations are authorized by this document.
 
 A normalized envelope needs: `schema_version`, unique `event_id`, `provider`, `provider_version`, `installation_id`, `workspace_id`, `session_id`, optional `task_id`, `event_type`, `source_timestamp` (nullable), `received_at`, source event ID/sequence when available, and a redacted typed payload. Keep provider facts separate from inferred state and attach provenance to inferences.
 

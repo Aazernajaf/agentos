@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-There are no releases or supported production versions. Phase 0 documents intended security boundaries; those controls are not implemented yet. Do not deploy AgentOS as a trusted control service.
+There are no releases or supported production versions. The local read-only preview implements the browser/API boundary described in [Live Fleet](docs/architecture/live-fleet.md); wider threat-model controls remain planned. It is not a trusted control service. Remote exposure and multi-user access are unsupported.
 
 ## Report a vulnerability
 

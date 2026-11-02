@@ -18,3 +18,7 @@ coverage/
 .idea/
 .vscode/
 __pycache__/
+
+# Private local scratch and macOS metadata
+/work/
+._*

@@ -2,7 +2,7 @@
 
 ## Scope and status
 
-These instructions apply throughout AgentOS unless a deeper file adds stricter local guidance. Read README.md and the relevant architecture/ADR documents before changing behavior. Phase 0 contains foundation documentation and opt-in synthetic feasibility probes; planned components must not be described as implemented.
+These instructions apply throughout AgentOS unless a deeper file adds stricter local guidance. Read README.md and the relevant architecture/ADR documents before changing behavior. The repository contains foundation documentation, synthetic feasibility probes and a read-only Live Fleet preview; planned components must not be described as implemented.
 
 ## Working rules
 
@@ -24,12 +24,16 @@ These instructions apply throughout AgentOS unless a deeper file adds stricter l
 ## Current checks
 
 ```sh
+go test -race ./...
+go vet ./...
+npm --prefix apps/web run typecheck
+npm --prefix apps/web run build
 python3 scripts/check_foundation.py
 python3 -m unittest discover -s scripts/probes -p 'test_*.py'
 git diff --check
 ```
 
-The offline probe tests do not contact providers. Live probes require an explicit task authorizing synthetic sessions and bounded inference; do not run them as routine lint. No application test/lint commands exist yet. When code is introduced, document its approved toolchain and add meaningful tests for event replay, adapter capabilities, privacy boundaries, and acceptance transitions as applicable.
+The offline probe tests do not contact providers. Live probes require an explicit task authorizing synthetic sessions and bounded inference; do not run them as routine lint. Go tests/vet, TypeScript typecheck and the frontend build cover the current slice. The built-server smoke check is documented in docs/architecture/live-fleet.md. No ESLint or CI workflow is configured. Add meaningful tests for each changed boundary; never substitute synthetic checks for real-provider compatibility evidence.
 
 ## Completion handoff
 

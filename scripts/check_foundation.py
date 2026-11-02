@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check foundation Markdown links, whitespace, and embedded JSON; stdlib only."""
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -21,7 +22,13 @@ def check(root):
     for name in REQUIRED:
         if not (root / name).is_file():
             errors.append(f'{name}: required document missing')
-    paths = sorted(p for p in root.rglob('*.md') if '.git' not in p.parts and not p.name.startswith('._'))
+    paths = []
+    ignored = {'.git', 'node_modules', 'dist', 'build', 'coverage', '__pycache__', 'work'}
+    for directory, children, names in os.walk(root):
+        children[:] = [name for name in children if name not in ignored and not name.startswith('._')]
+        paths.extend(Path(directory) / name for name in names
+                     if name.endswith('.md') and not name.startswith('._'))
+    paths.sort()
     for path in paths:
         label = path.relative_to(root)
         content = path.read_text(encoding='utf-8')

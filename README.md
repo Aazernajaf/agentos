@@ -4,7 +4,7 @@
 
 AgentOS is a planned local-first control center for Claude Code, Codex, and eventually other agents. Its goal is to answer: what is running, what is blocked, how much capacity is available, and which results have actually been verified?
 
-> **Status: Phase 0 — foundation and feasibility.** This repository contains foundation documentation, repository checks, and opt-in synthetic provider feasibility probes. There is no runnable backend, frontend, installer, database, or implemented adapter yet. No release or compatibility guarantee is available.
+> **Status: early read-only preview.** A Go backend and React/TypeScript screen now run locally with a two-provider synthetic demo or one explicitly selected metadata stream. There is no durable history, automatic discovery, provider control, or released compatibility guarantee.
 
 ## Product direction
 
@@ -17,7 +17,7 @@ The first target is a single-user macOS/Linux experience without an AgentOS acco
 
 ## Architecture direction
 
-Go modular monolith + React/TypeScript UI; REST and SSE are the initial API direction. SQLite is the local storage candidate; PostgreSQL is reserved for a later server mode. No runtime packages or database drivers have been selected or installed.
+Go modular monolith + React/TypeScript UI; REST and SSE are the initial API direction. SQLite is the local storage candidate; PostgreSQL is reserved for a later server mode. The preview uses only the approved minimal React/TypeScript/Vite packages and Go standard library. No database driver has been installed.
 
 ```mermaid
 flowchart LR
@@ -30,22 +30,39 @@ flowchart LR
     Evidence[Revision-bound evidence] --> Core
 ```
 
-## Start contributing
+## Try Live Fleet
 
-There is no application quick start yet. To inspect the foundation:
+Requirements: Go 1.26+, Node 22.12+ and npm.
 
 ```sh
 git clone https://github.com/Aazernajaf/agentos.git
 cd agentos
+npm --prefix apps/web ci
+npm --prefix apps/web run build
+go run ./cmd/agentos --demo
+```
+
+Open the printed loopback URL. Demo sessions are synthetic; no provider account or model call is used. [Connection instructions and limitations](docs/architecture/live-fleet.md) explain explicit source input and the local security boundary. No database or migrations are required.
+
+![Live Fleet synthetic demo with Claude Code and Codex](docs/images/live-fleet.png)
+
+## Development checks
+
+```sh
+go test -race ./...
+go vet ./...
+npm --prefix apps/web run typecheck
+npm --prefix apps/web run build
 python3 scripts/check_foundation.py
 python3 -m unittest discover -s scripts/probes -p 'test_*.py'
 git diff --check
 ```
 
-The repository check uses only Python's standard library. Go/React tests and lint will be added with their implementation and approved tooling; they do not exist today.
+Go uses only its standard library. Frontend packages are pinned in a lockfile. See [Contributing](CONTRIBUTING.md) before adding tooling or dependencies. Do not run paid/live feasibility probes as routine tests.
 
 ## Documentation
 
+- [Live Fleet preview: run, connect, security and API](docs/architecture/live-fleet.md)
 - [Product scope and roadmap](docs/product/strategy.md)
 - [Architecture and domain boundaries](docs/architecture/overview.md)
 - [Adapter feasibility and validation plan](docs/architecture/adapters.md)

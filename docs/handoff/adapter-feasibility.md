@@ -1,5 +1,7 @@
 # Adapter feasibility handoff
 
+Follow-up implementation: [Live Fleet preview handoff](live-fleet-preview.md). The observations below describe the earlier feasibility delivery.
+
 Date: 2026-11-02. Scope: dedicated Claude Code and Codex feasibility experiments following the original Phase 0 foundation. Production adapter implementation has not begun.
 
 ## Actual changes
