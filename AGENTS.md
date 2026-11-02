@@ -2,7 +2,7 @@
 
 ## Scope and status
 
-These instructions apply throughout AgentOS unless a deeper file adds stricter local guidance. Read README.md and the relevant architecture/ADR documents before changing behavior. Phase 0 is documentation only; planned components must not be described as implemented.
+These instructions apply throughout AgentOS unless a deeper file adds stricter local guidance. Read README.md and the relevant architecture/ADR documents before changing behavior. Phase 0 contains foundation documentation and opt-in synthetic feasibility probes; planned components must not be described as implemented.
 
 ## Working rules
 
@@ -25,10 +25,11 @@ These instructions apply throughout AgentOS unless a deeper file adds stricter l
 
 ```sh
 python3 scripts/check_foundation.py
+python3 -m unittest discover -s scripts/probes -p 'test_*.py'
 git diff --check
 ```
 
-No application test/lint commands exist yet. When code is introduced, document its approved toolchain and add meaningful tests for event replay, adapter capabilities, privacy boundaries, and acceptance transitions as applicable.
+The offline probe tests do not contact providers. Live probes require an explicit task authorizing synthetic sessions and bounded inference; do not run them as routine lint. No application test/lint commands exist yet. When code is introduced, document its approved toolchain and add meaningful tests for event replay, adapter capabilities, privacy boundaries, and acceptance transitions as applicable.
 
 ## Completion handoff
 

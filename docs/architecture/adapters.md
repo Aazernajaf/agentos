@@ -1,13 +1,13 @@
 # Adapter feasibility
 
-Reviewed 2026-11-02. This is documentation and local CLI surface inspection, not an end-to-end integration result. No private sessions, credentials, provider settings, or hooks were read or changed; no model runs were started.
+Updated 2026-11-02. The original surface inspection has been followed by scoped synthetic experiments; see [executed results](adapter-experiments.md) and [sanitized evidence](adapter-probe-results.json). No production adapter is implemented. Existing private sessions were not inspected or controlled.
 
 ## Evidence and limits
 
 | Provider | Candidate observation path | Candidate control path | Evidence today | Unproven |
 | --- | --- | --- | --- | --- |
-| Codex | App Server thread queries and notifications | App Server turn operations | Official protocol docs; local CLI 0.150.1 help and generated JSON schemas | Cross-client session visibility, permissions, notification coverage, reconnect/replay, real execution |
-| Claude Code | Explicitly installed opt-in hooks; JSON stream for AgentOS-launched CLI runs | New CLI runs and documented resume flows in a controlled workspace | Official hooks/programmatic docs; local Claude Code 2.1.296 help | Universal discovery, visibility into unrelated terminals, safe live control, event reliability |
+| Codex | App Server thread queries and notifications | Start, continue own thread; interrupt on turn-start notification | CLI 0.150.1: synthetic reply, events, usage notification, persisted list/read/resume, successful interruption | Unrelated-client session visibility, approval flows, replay/gap recovery, version ranges |
+| Claude Code | Explicitly installed opt-in hooks; JSON stream for AgentOS-launched CLI runs | CLI run/resume candidates | CLI 2.1.316: synthetic Read, structured/partial events, all five test hooks, context recall on explicit resume and usage/cost fields; earlier 2.1.296 auth-error observations retained | General discovery/history API, billing accuracy, active interruption and cross-client controls |
 
 Codex generated schema inspection found ThreadListParams/Response, ThreadReadParams/Response, TurnStartParams/Response, TurnInterruptParams/Response, ItemStartedNotification, and TurnCompletedNotification. Generation alone proves neither successful requests nor permission to control existing threads. The installed CLI labels App Server tooling experimental.
 
@@ -34,4 +34,4 @@ Prefer documented transports. Avoid scraping private internal databases or trans
 - [Claude Code hooks reference](https://code.claude.com/docs/en/hooks): lifecycle integration and hook inputs.
 - [Run Claude Code programmatically](https://code.claude.com/docs/en/headless): CLI execution and structured output.
 
-Documentation can change independently of installed versions. Revalidate before implementation. No provider is advertised as runtime-supported yet.
+Documentation can change independently of installed versions. Revalidate before implementation. These results establish feasibility only for the tested synthetic scope; neither provider is advertised as a supported production adapter.

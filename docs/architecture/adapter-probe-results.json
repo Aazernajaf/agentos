@@ -1,0 +1,474 @@
+{
+  "date": "2026-11-02",
+  "scope": "Synthetic disposable sessions only; sanitized aggregates, not raw streams.",
+  "experiments": [
+    {
+      "observed_at": "2026-11-02T08:04:24.906285+00:00",
+      "live_requested": false,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "codex": {
+          "version": "codex-cli 0.150.1",
+          "transport": "stdio",
+          "checks": {
+            "reject_before_initialize": true,
+            "initialize": true,
+            "reject_duplicate_initialize": true,
+            "isolated_list_empty": true,
+            "unknown_method_rejected": true,
+            "malformed_request_rejected": true,
+            "thread_start": true,
+            "thread_read_before_turn": true,
+            "reconnect_initialize": true,
+            "discover_own_persisted_thread": false,
+            "history_read_after_reconnect": false,
+            "resume_owned_thread": false,
+            "item_notifications": false,
+            "usage_notification": false
+          },
+          "history_error_shape": {
+            "error_code": -32600
+          },
+          "notification_counts": {
+            "remoteControl/status/changed": 2,
+            "thread/started": 1
+          }
+        }
+      },
+      "experiment": "codex-local"
+    },
+    {
+      "observed_at": "2026-11-02T08:04:29.854221+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "codex": {
+          "version": "codex-cli 0.150.1",
+          "transport": "stdio",
+          "checks": {
+            "reject_before_initialize": true,
+            "initialize": true,
+            "reject_duplicate_initialize": true,
+            "isolated_list_empty": true,
+            "unknown_method_rejected": true,
+            "malformed_request_rejected": true,
+            "thread_start": true,
+            "thread_read_before_turn": true,
+            "turn_start": true,
+            "turn_completed": false,
+            "synthetic_reply": false,
+            "reconnect_initialize": true,
+            "discover_own_persisted_thread": true,
+            "history_read_after_reconnect": true,
+            "resume_owned_thread": true,
+            "interrupt_acknowledged": false,
+            "interrupt_completed_as_interrupted": false,
+            "item_notifications": true,
+            "usage_notification": false
+          },
+          "first_turn_status": "failed",
+          "interrupted_turn_status": "failed",
+          "notification_counts": {
+            "remoteControl/status/changed": 2,
+            "thread/started": 1,
+            "thread/status/changed": 5,
+            "turn/started": 2,
+            "warning": 3,
+            "item/started": 2,
+            "item/completed": 2,
+            "error": 20,
+            "turn/completed": 2,
+            "thread/goal/cleared": 1
+          }
+        },
+        "claude": {
+          "version": "2.1.296 (Claude Code)",
+          "transport": "stream-json",
+          "checks": {
+            "call_1_success": false,
+            "hook_SessionStart": true,
+            "hook_PreToolUse": false,
+            "hook_PostToolUse": false,
+            "hook_Stop": false,
+            "hook_SessionEnd": true
+          },
+          "max_budget_usd_per_call": 0.25,
+          "live_requested": true,
+          "call_1": {
+            "exit_code": 1,
+            "event_counts": {
+              "system/hook_started": 1,
+              "system/hook_response": 1,
+              "system/init": 1,
+              "system/status": 1,
+              "assistant": 1,
+              "result/success": 1
+            },
+            "result_error": true,
+            "result_subtype": "success",
+            "has_usage": true,
+            "estimated_cost_usd": 0,
+            "synthetic_reply": false,
+            "same_owned_session": true
+          },
+          "hook_event_counts": {
+            "SessionStart": 1,
+            "SessionEnd": 1
+          }
+        }
+      },
+      "experiment": "adapter-live"
+    },
+    {
+      "observed_at": "2026-11-02T08:06:04.756808+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "codex": {
+          "version": "codex-cli 0.150.1",
+          "transport": "stdio",
+          "checks": {
+            "reject_before_initialize": true,
+            "initialize": true,
+            "reject_duplicate_initialize": true,
+            "isolated_list_empty": true,
+            "unknown_method_rejected": true,
+            "malformed_request_rejected": true,
+            "thread_start": true,
+            "thread_read_before_turn": true,
+            "turn_start": true,
+            "turn_completed": true,
+            "synthetic_reply": true,
+            "reconnect_initialize": true,
+            "discover_own_persisted_thread": true,
+            "history_read_after_reconnect": true,
+            "resume_owned_thread": true,
+            "interrupt_acknowledged": false,
+            "interrupt_completed_as_interrupted": false,
+            "item_notifications": true,
+            "usage_notification": true
+          },
+          "auth_mode": "native_cli_auth_link",
+          "first_turn_status": "completed",
+          "failure_categories": [],
+          "interrupted_turn_status": "completed",
+          "stream_error_categories": [],
+          "notification_counts": {
+            "remoteControl/status/changed": 2,
+            "thread/started": 1,
+            "mcpServer/startupStatus/updated": 5,
+            "thread/status/changed": 5,
+            "turn/started": 2,
+            "warning": 1,
+            "item/started": 4,
+            "item/completed": 4,
+            "item/agentMessage/delta": 13,
+            "thread/tokenUsage/updated": 3,
+            "account/rateLimits/updated": 2,
+            "turn/completed": 2,
+            "thread/goal/cleared": 1
+          }
+        }
+      },
+      "experiment": "codex-native-live"
+    },
+    {
+      "observed_at": "2026-11-02T08:07:18.169090+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "codex": {
+          "version": "codex-cli 0.150.1",
+          "transport": "stdio",
+          "checks": {
+            "reject_before_initialize": true,
+            "initialize": true,
+            "reject_duplicate_initialize": true,
+            "isolated_list_empty": true,
+            "unknown_method_rejected": true,
+            "malformed_request_rejected": true,
+            "thread_start": true,
+            "thread_read_before_turn": true,
+            "turn_start": true,
+            "interrupt_acknowledged": false,
+            "turn_completed": true,
+            "interrupt_completed_as_interrupted": false,
+            "synthetic_reply": false,
+            "reconnect_initialize": true,
+            "discover_own_persisted_thread": true,
+            "history_read_after_reconnect": true,
+            "resume_owned_thread": true,
+            "item_notifications": true,
+            "usage_notification": true
+          },
+          "auth_mode": "native_cli_auth_link",
+          "interrupt_response_shape": {
+            "error_code": -32600
+          },
+          "first_turn_status": "completed",
+          "failure_categories": [],
+          "stream_error_categories": [],
+          "notification_counts": {
+            "remoteControl/status/changed": 2,
+            "thread/started": 1,
+            "unknown": 5,
+            "thread/status/changed": 3,
+            "turn/started": 1,
+            "warning": 1,
+            "item/started": 3,
+            "item/completed": 3,
+            "item/agentMessage/delta": 999,
+            "thread/tokenUsage/updated": 1,
+            "turn/completed": 1
+          }
+        }
+      },
+      "experiment": "codex-interrupt"
+    },
+    {
+      "observed_at": "2026-11-02T08:08:07.151694+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "codex": {
+          "version": "codex-cli 0.150.1",
+          "transport": "stdio",
+          "checks": {
+            "reject_before_initialize": true,
+            "initialize": true,
+            "reject_duplicate_initialize": true,
+            "isolated_list_empty": true,
+            "unknown_method_rejected": true,
+            "malformed_request_rejected": true,
+            "thread_start": true,
+            "thread_read_before_turn": true,
+            "turn_start": true,
+            "interrupt_sent_on_turn_started": true,
+            "interrupt_acknowledged": true,
+            "turn_completed": false,
+            "interrupt_completed_as_interrupted": true,
+            "synthetic_reply": false,
+            "reconnect_initialize": true,
+            "discover_own_persisted_thread": true,
+            "history_read_after_reconnect": true,
+            "resume_owned_thread": true,
+            "item_notifications": true,
+            "usage_notification": false
+          },
+          "auth_mode": "native_cli_auth_link",
+          "interrupt_response_shape": {},
+          "first_turn_status": "interrupted",
+          "failure_categories": [],
+          "stream_error_categories": [],
+          "notification_counts": {
+            "remoteControl/status/changed": 2,
+            "thread/started": 1,
+            "unknown": 2,
+            "thread/status/changed": 3,
+            "turn/started": 1,
+            "item/started": 1,
+            "item/completed": 1,
+            "turn/completed": 1
+          }
+        }
+      },
+      "experiment": "codex-interrupt-early"
+    },
+    {
+      "observed_at": "2026-11-02T08:08:34.325629+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "claude": {
+          "version": "2.1.296 (Claude Code)",
+          "transport": "stream-json",
+          "checks": {
+            "call_1_success": false,
+            "hook_SessionStart": true,
+            "hook_PreToolUse": false,
+            "hook_PostToolUse": false,
+            "hook_Stop": false,
+            "hook_SessionEnd": true
+          },
+          "max_budget_usd_per_call": 0.25,
+          "live_requested": true,
+          "call_1": {
+            "exit_code": 1,
+            "event_counts": {
+              "system/hook_started": 1,
+              "system/hook_response": 1,
+              "system/init": 1,
+              "system/status": 1,
+              "assistant": 1,
+              "result/success": 1
+            },
+            "result_error": true,
+            "result_subtype": "success",
+            "has_usage": true,
+            "estimated_cost_usd": 0,
+            "synthetic_reply": false,
+            "same_owned_session": true,
+            "failure_categories": [
+              "unclassified"
+            ]
+          },
+          "hook_event_counts": {
+            "SessionStart": 1,
+            "SessionEnd": 1
+          }
+        }
+      },
+      "experiment": "claude-authenticated-live"
+    },
+    {
+      "observed_at": "2026-11-02T08:11:21.294334+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "claude": {
+          "version": "2.1.296 (Claude Code)",
+          "transport": "stream-json",
+          "checks": {},
+          "max_budget_usd_per_call": 0.25,
+          "live_requested": true,
+          "native_auth_ready": false,
+          "skipped": "native_auth_not_ready; no model call attempted"
+        }
+      },
+      "experiment": "claude-auth-readiness"
+    },
+    {
+      "observed_at": "2026-11-02T08:12:14.894583+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "codex": {
+          "version": "codex-cli 0.150.1",
+          "transport": "stdio",
+          "checks": {
+            "reject_before_initialize": true,
+            "initialize": true,
+            "reject_duplicate_initialize": true,
+            "isolated_list_empty": true,
+            "unknown_method_rejected": true,
+            "malformed_request_rejected": true,
+            "thread_start": true,
+            "thread_read_before_turn": true,
+            "turn_start": true,
+            "turn_completed": true,
+            "synthetic_reply": true,
+            "reconnect_initialize": true,
+            "discover_own_persisted_thread": true,
+            "history_read_after_reconnect": true,
+            "resume_owned_thread": true,
+            "continue_context_recall": true,
+            "item_notifications": true,
+            "usage_notification": true
+          },
+          "auth_mode": "native_cli_auth_link",
+          "first_turn_status": "completed",
+          "failure_categories": [],
+          "continued_turn_status": "completed",
+          "stream_error_categories": [],
+          "notification_counts": {
+            "remoteControl/status/changed": 2,
+            "thread/started": 1,
+            "unknown": 6,
+            "thread/status/changed": 5,
+            "turn/started": 2,
+            "warning": 1,
+            "item/started": 4,
+            "item/completed": 4,
+            "item/agentMessage/delta": 16,
+            "thread/tokenUsage/updated": 3,
+            "turn/completed": 2,
+            "thread/goal/cleared": 1
+          }
+        }
+      },
+      "experiment": "codex-context-recall"
+    },
+    {
+      "observed_at": "2026-11-02T08:12:59.050760+00:00",
+      "live_requested": true,
+      "timeout_seconds_per_call": 90,
+      "max_model_turns_per_provider": 2,
+      "providers": {
+        "claude": {
+          "version": "2.1.316 (Claude Code)",
+          "transport": "stream-json",
+          "checks": {
+            "call_1_success": true,
+            "call_2_success": true,
+            "hook_SessionStart": true,
+            "hook_PreToolUse": true,
+            "hook_PostToolUse": true,
+            "hook_Stop": true,
+            "hook_SessionEnd": true
+          },
+          "max_budget_usd_per_call": 0.25,
+          "live_requested": true,
+          "native_auth_ready": true,
+          "call_1": {
+            "exit_code": 0,
+            "event_counts": {
+              "system/hook_started": 1,
+              "system/hook_response": 1,
+              "system/init": 1,
+              "system/status": 2,
+              "stream_event": 28,
+              "assistant": 2,
+              "rate_limit_event": 1,
+              "user": 1,
+              "result/success": 1
+            },
+            "result_error": false,
+            "result_subtype": "success",
+            "has_usage": true,
+            "estimated_cost_usd": 0.0174486,
+            "synthetic_reply": true,
+            "same_owned_session": true,
+            "failure_categories": []
+          },
+          "call_2": {
+            "exit_code": 0,
+            "event_counts": {
+              "system/hook_started": 1,
+              "system/hook_response": 1,
+              "system/init": 1,
+              "system/status": 1,
+              "stream_event": 9,
+              "assistant": 1,
+              "rate_limit_event": 1,
+              "result/success": 1
+            },
+            "result_error": false,
+            "result_subtype": "success",
+            "has_usage": true,
+            "estimated_cost_usd": 0.0191124,
+            "synthetic_reply": true,
+            "same_owned_session": true,
+            "failure_categories": []
+          },
+          "hook_event_counts": {
+            "SessionStart": 2,
+            "PreToolUse": 1,
+            "PostToolUse": 1,
+            "Stop": 2,
+            "SessionEnd": 2
+          },
+          "temporary_settings_cleanup": "TemporaryDirectory on probe exit"
+        }
+      },
+      "experiment": "claude-authenticated-success"
+    }
+  ]
+}

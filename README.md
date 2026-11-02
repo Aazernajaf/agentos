@@ -4,7 +4,7 @@
 
 AgentOS is a planned local-first control center for Claude Code, Codex, and eventually other agents. Its goal is to answer: what is running, what is blocked, how much capacity is available, and which results have actually been verified?
 
-> **Status: Phase 0 — foundation and feasibility.** This repository contains documentation and repository checks only. There is no runnable backend, frontend, installer, database, or implemented adapter yet. No release or compatibility guarantee is available.
+> **Status: Phase 0 — foundation and feasibility.** This repository contains foundation documentation, repository checks, and opt-in synthetic provider feasibility probes. There is no runnable backend, frontend, installer, database, or implemented adapter yet. No release or compatibility guarantee is available.
 
 ## Product direction
 
@@ -38,6 +38,7 @@ There is no application quick start yet. To inspect the foundation:
 git clone https://github.com/Aazernajaf/agentos.git
 cd agentos
 python3 scripts/check_foundation.py
+python3 -m unittest discover -s scripts/probes -p 'test_*.py'
 git diff --check
 ```
 
@@ -48,6 +49,7 @@ The repository check uses only Python's standard library. Go/React tests and lin
 - [Product scope and roadmap](docs/product/strategy.md)
 - [Architecture and domain boundaries](docs/architecture/overview.md)
 - [Adapter feasibility and validation plan](docs/architecture/adapters.md)
+- [Executed adapter experiments](docs/architecture/adapter-experiments.md)
 - [Event contract draft](docs/architecture/events.md)
 - [Architecture decisions](docs/adr/README.md)
 - [Threat model](docs/security/threat-model.md)

@@ -1,6 +1,6 @@
 # Phase 0 inspection and engineering handoff
 
-Date: 2026-11-02. Status: foundation prepared; runtime feasibility remains open.
+Date: 2026-11-02. Historical foundation snapshot. Follow-up runtime observations are in [adapter feasibility handoff](adapter-feasibility.md); the baseline below describes the original documentation-only delivery.
 
 ## Observed baseline
 

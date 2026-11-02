@@ -21,7 +21,7 @@ def check(root):
     for name in REQUIRED:
         if not (root / name).is_file():
             errors.append(f'{name}: required document missing')
-    paths = sorted(p for p in root.rglob('*.md') if '.git' not in p.parts)
+    paths = sorted(p for p in root.rglob('*.md') if '.git' not in p.parts and not p.name.startswith('._'))
     for path in paths:
         label = path.relative_to(root)
         content = path.read_text(encoding='utf-8')
