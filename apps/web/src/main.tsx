@@ -29,6 +29,58 @@ function ageLabel(value: string, now: number) {
   return `${Math.floor(seconds / 60)}m ago`
 }
 
+type ReviewReport = {
+  task_id: string; review_id: string; revision: string; state: string; expires_at: string
+  previews: {path: string; text: string; truncated: boolean}[]
+  artifacts: { path: string; sha256: string }[]
+  tests: { id: string; passed: boolean; output_sha256: string; output_bytes: number }[]
+}
+function ReviewPanel() {
+  const [data, setData] = useState<{report: ReviewReport; csrf: string} | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  const [unavailable, setUnavailable] = useState(false)
+  const load = async () => {
+    const response = await fetch('/v0/review')
+    if (response.status === 404) { setUnavailable(true); return }
+    if (!response.ok) throw new Error('Sübutları yeniləmək mümkün olmadı.')
+    setData(await response.json()); setUnavailable(false)
+  }
+  useEffect(() => {
+    let active = true
+    const refresh = () => { if (active) void load().catch(() => { if (active) setError('Əlaqə kəsildi. Təsdiqdən əvvəl səhifəni yeniləyin.') }) }
+    refresh()
+    const timer = window.setInterval(refresh, 10000)
+    return () => { active = false; window.clearInterval(timer) }
+  }, [])
+  const approve = async () => {
+    if (!data || busy) return
+    setBusy(true); setError('')
+    try {
+      const response = await fetch('/v0/review/approve', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-AgentOS-CSRF': data.csrf }, body: JSON.stringify({review_id: data.report.review_id}) })
+      if (!response.ok) throw new Error('Təsdiq alınmadı. Sübut dəyişmiş, vaxtı keçmiş və ya artıq istifadə edilmiş ola bilər.')
+      const report = await response.json() as ReviewReport
+      setData({...data, report})
+    } catch (e) { setError(e instanceof Error ? e.message : 'Təsdiq alınmadı.'); await load().catch(() => {}) }
+    finally { setBusy(false) }
+  }
+  const report = data?.report
+  const pending = report?.state === 'awaiting_user_approval'
+  const accepted = report?.state === 'accepted'
+  return <section className="fleet-panel review-panel" aria-labelledby="review-heading">
+    <div className="panel-heading"><div><h2 id="review-heading">Nəticələr və təsdiq</h2><p>İş yalnız sizin təsdiqinizdən sonra tamamlanmış sayılır.</p></div><span className={`state ${accepted ? 'completed' : 'unknown'}`} role="status">{accepted ? 'Tamamlanıb · təsdiqlənib' : pending ? 'Təsdiq gözləyir' : report?.state === 'stale' ? 'Sübut köhnəlib' : 'Sübut gözlənilir'}</span></div>
+    {error && <p className="review-message" role="alert">{error}</p>}
+    {!report ? <p className="review-message">{unavailable ? 'Hazırda yoxlanmış layihə tapşırığı qoşulmayıb.' : 'Sübutlar yüklənir…'}</p> : <div className="review-body">
+      <p><strong>Tapşırıq:</strong> {report.task_id}</p>
+      <details><summary>Yoxlanmış məzmunun izi</summary><code>{report.revision}</code></details>
+      <h3>Nəticə faylları</h3><ul>{report.artifacts.map(a => <li key={a.path}><strong>{a.path}</strong><code aria-label="Faylın SHA-256 izi">{a.sha256}</code>{report.previews?.filter(p => p.path === a.path).map(p => <details key={p.path}><summary>Fayla bax{p.truncated ? " · ilk hissə" : ""}</summary><pre>{p.text}</pre></details>)}</li>)}</ul>
+      <h3>Test sübutları</h3><ul>{report.tests.map(t => <li key={t.id}><strong>{t.passed ? '✓ Keçdi' : '✕ Keçmədi'} · {t.id}</strong><span>{t.output_bytes} bayt test çıxışı yoxlanıb</span><code aria-label="Test çıxışının SHA-256 izi">{t.output_sha256}</code></li>)}</ul>
+      <p>{accepted ? 'Bu nəticə ayrıca təsdiqləndi.' : report.state === 'stale' ? 'Fayllar dəyişib və ya sübutun vaxtı keçib. Yenidən yoxlama tələb olunur.' : `Faylları və test sübutlarını nəzərdən keçirin. Təsdiq müddəti: ${new Date(report.expires_at).toLocaleTimeString()}.`}</p>
+      <button className="approve-button" disabled={!pending || busy || !!error} onClick={() => void approve()}>{busy ? 'Təsdiqlənir…' : 'Təsdiqlə və tamamla'}</button>
+    </div>}
+  </section>
+}
+
 function App() {
   const [fleet, setFleet] = useState<Fleet | null>(null)
   const [connection, setConnection] = useState<Connection>('connecting')
@@ -86,7 +138,7 @@ function App() {
       <aside className="sidebar" aria-label="Workspace navigation">
         <div className="workspace"><span className="workspace-icon">A</span><div><strong>{fleet?.mode === 'demo' ? 'Demo workspace' : 'Your workspace'}</strong><small>On this computer</small></div></div>
         <nav aria-label="Main"><a className="nav-item selected" href="#main" aria-current="page"><span aria-hidden="true">▦</span> Live Fleet <span className="nav-count">{sessions.length}</span></a></nav>
-        <div className="sidebar-note"><span className="small-label">OBSERVATION ONLY</span><p>Your agents stay in your control. This preview sends no commands.</p></div>
+        <div className="sidebar-note"><span className="small-label">LOCAL REVIEW</span><p>Agent observation and your explicit project-result approval. No provider commands are sent.</p></div>
         <a className="docs-link" href="https://github.com/Aazernajaf/agentos/blob/main/docs/architecture/live-fleet.md" target="_blank" rel="noreferrer">Setup & documentation <span aria-hidden="true">↗</span></a>
       </aside>
       <main id="main">
@@ -97,6 +149,7 @@ function App() {
         <section className="metrics" aria-label="Fleet overview">
           {[['Observed sessions', sessions.length, 'Explicitly connected sources'], ['Running', running, 'Execution is in progress'], ['Execution complete', completed, 'Results still need verification'], ['Needs attention', attention, 'Failed, interrupted, or unknown']].map(([title, value, caption]) => <div className="metric" key={title}><span>{title}</span><strong>{fleet ? value : '—'}</strong><small>{caption}</small></div>)}
         </section>
+        <ReviewPanel />
         <section className="fleet-panel" aria-labelledby="sessions-heading">
           <div className="panel-heading"><div><h2 id="sessions-heading">Agent sessions <span>{sessions.length}</span></h2><p>Execution state from your connected sources.</p></div><button className="secondary" aria-expanded={help} aria-controls="connection-help" onClick={() => setHelp(!help)}>How to connect <span aria-hidden="true">↗</span></button></div>
           {help && <div id="connection-help" className="help"><strong>Connect an explicitly selected session</strong><p>This preview reads an owned provider’s event stream from standard input. It does not scan private histories or launch agents.</p><a href="https://github.com/Aazernajaf/agentos/blob/main/docs/architecture/live-fleet.md" target="_blank" rel="noreferrer">Read connection instructions ↗</a></div>}

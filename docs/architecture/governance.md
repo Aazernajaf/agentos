@@ -1,6 +1,8 @@
 # Permission and completion kernel
 
-Status: implemented Go in-process kernel and runnable synthetic demo. This is the first enforcement slice, not universal interception of Codex, Claude Code or Antigravity tools. Live Fleet HTTP/UI remains read-only and does not expose operator/grant endpoints.
+Status: implemented Go in-process kernel and runnable synthetic demo. This is the first enforcement slice, not universal interception of Codex, Claude Code or Antigravity tools. Live Fleet observation remains read-only and does not expose grant or provider-control endpoints. Optional project-result acceptance is described below.
+
+The [project submission verifier](project-task-review.md) binds real artifact bytes and executed project tests to mandatory operator review, including an optional same-origin Fleet approval panel. These local interfaces do not authenticate human identity against software controlling the same OS account. The default Fleet server still has no approval endpoint unless explicitly configured.
 
 ## Run the enforced flow
 

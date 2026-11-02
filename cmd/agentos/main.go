@@ -12,12 +12,15 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
 	"github.com/Aazernajaf/agentos/internal/api"
 	"github.com/Aazernajaf/agentos/internal/fleet"
 	"github.com/Aazernajaf/agentos/internal/observe"
+	"github.com/Aazernajaf/agentos/internal/projecttask"
 )
 
 func main() {
@@ -36,6 +39,10 @@ func run() error {
 	session := flag.String("session", "", "explicitly authorized provider session ID")
 	workspace := flag.String("workspace", "local", "workspace label")
 	installation := flag.String("installation", "local", "installation label")
+	reviewManifest := flag.String("review-manifest", "", "operator-owned project manifest outside its workspace")
+	reviewWorkspace := flag.String("review-workspace", ".", "project workspace to verify")
+	policyRoot := flag.String("policy-repo", ".", "canonical AgentOS policy repository")
+	runChecks := flag.Bool("run-review-checks", false, "authorize the manifest's project test commands")
 	flag.Parse()
 	host, _, err := net.SplitHostPort(*address)
 	if err != nil || net.ParseIP(host) == nil || !net.ParseIP(host).IsLoopback() {
@@ -67,6 +74,51 @@ func run() error {
 	}
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
+	if *reviewManifest != "" {
+		if !*runChecks {
+			return errors.New("review tests require --run-review-checks")
+		}
+		root, err := filepath.EvalSymlinks(*reviewWorkspace)
+		if err != nil {
+			return err
+		}
+		root, err = filepath.Abs(root)
+		if err != nil {
+			return err
+		}
+		config, err := filepath.EvalSymlinks(*reviewManifest)
+		if err != nil {
+			return err
+		}
+		config, err = filepath.Abs(config)
+		if err != nil {
+			return err
+		}
+		rel, err := filepath.Rel(root, config)
+		if err != nil || (!strings.HasPrefix(rel, ".."+string(os.PathSeparator)) && rel != "..") {
+			return errors.New("operator manifest must be outside workspace")
+		}
+		f, err := os.Open(config)
+		if err != nil {
+			return err
+		}
+		m, err := projecttask.DecodeManifest(f)
+		f.Close()
+		if err != nil {
+			return err
+		}
+		task, reviewer, err := projecttask.New(root, *policyRoot, m)
+		if err != nil {
+			return err
+		}
+		defer task.Close()
+		if _, err := task.Verify(ctx); err != nil {
+			return err
+		}
+		if err := handler.EnableReview(task, reviewer); err != nil {
+			return err
+		}
+	}
 	if *demo {
 		go runDemo(ctx, store)
 	} else {

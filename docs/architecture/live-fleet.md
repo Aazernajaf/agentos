@@ -1,4 +1,4 @@
-# Live Fleet — read-only preview
+# Live Fleet — observation and optional project review
 
 Status: runnable local preview. Go standard-library backend and React/TypeScript UI; no database, provider process launcher, task acceptance engine, or agent control routes. This is a thin implementation slice, not the complete v0.1 milestone.
 
@@ -38,7 +38,7 @@ Standard-input EOF or oversized/unreadable input marks the source disconnected, 
 
 - `GET /v0/fleet`: complete current metadata snapshot with process-local cursor and demo/observe mode.
 - `GET /v0/events`: SSE `fleet` events containing the same complete snapshot, with comment heartbeats. Every connection starts with a fresh snapshot; Last-Event-ID is deliberately not replayed. Coalescing can omit intermediate transitions. No durable event journal or historical replay is claimed.
-- No HTTP ingest endpoint or mutation/control routes. Non-GET methods are rejected.
+- No HTTP ingest or provider control routes. By default non-GET methods are rejected. Explicit host configuration can enable the [project evidence and approval panel](project-task-review.md), with one CSRF-protected POST for operator acceptance. Observation never implies acceptance.
 - Numeric loopback bind only; exact Host and same-origin checks; cross-site and same-site sibling-origin browser requests rejected by Fetch Metadata; no CORS allowances.
 - Opening `/` through direct/same-origin local navigation establishes an HttpOnly, SameSite=Strict cookie scoped to `/v0/`, with a per-origin cookie name so parallel local instances do not overwrite each other. API requests need that secret cookie. It is never put in URLs or printed. Static serving is limited to the index and non-hidden asset files; CSP disallows external scripts and framing.
 - Bootstrap intentionally trusts local native clients. It does not defend against a compromised OS user or malicious local process; this is not remote or multi-user authentication. Reverse proxy exposure is unsupported.

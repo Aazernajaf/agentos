@@ -747,3 +747,15 @@ footer span:last-child {
   outline: 2px solid #315ddc;
   outline-offset: -2px;
 }
+
+.review-panel { margin-bottom: 24px; }
+.review-body, .review-message { padding: 8px 24px 24px; }
+.review-body ul { padding-left: 20px; }
+.review-body li { margin: 12px 0; }
+.review-body li span { display: block; color: #596474; margin-top: 4px; }
+.review-body code { display: block; overflow-wrap: anywhere; font-size: 12px; margin-top: 6px; }
+.review-body summary { cursor: pointer; }
+.approve-button { background: #176344; color: white; padding: 12px 20px; border: 0; border-radius: 8px; font-weight: 600; cursor: pointer; }
+.approve-button:disabled { opacity: .55; cursor: not-allowed; }
+.approve-button:focus-visible { outline: 3px solid #317fc1; outline-offset: 3px; }
+.review-body pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; overflow-y: auto; padding: 12px; background: #f3f5f7; border-radius: 6px; }

@@ -4,7 +4,7 @@
 
 AgentOS is a planned local-first control center for Claude Code, Codex, and eventually other agents. Its goal is to answer: what is running, what is blocked, how much capacity is available, and which results have actually been verified?
 
-> **Status: early read-only preview.** A Go backend and React/TypeScript screen now run locally with a two-provider synthetic demo or one explicitly selected metadata stream. There is no durable history, automatic discovery, provider control, or released compatibility guarantee.
+> **Status: early local preview.** A Go backend and React/TypeScript screen now run locally with a two-provider synthetic demo or one explicitly selected metadata stream. There is no durable history, automatic discovery, provider control, or released compatibility guarantee.
 
 ## Product direction
 
@@ -48,7 +48,7 @@ Open the printed loopback URL. Demo sessions are synthetic; no provider account 
 
 ## Permission and completion kernel
 
-A separate Go kernel gates registered operations and task acceptance: scoped authority, exact approvals, pinned skill/SOP/policy versions, trusted checks, revision-bound receipts and explicit review policy. It does not intercept external CLI tools or add write/control routes to the read-only Fleet.
+A separate Go kernel gates registered operations and task acceptance: scoped authority, exact approvals, pinned skill/SOP/policy versions, trusted checks, revision-bound receipts and explicit review policy. It does not intercept external CLI tools. Fleet observation stays read-only; optional host-configured project review adds explicit operator acceptance.
 
 ```sh
 go run ./cmd/agentos-policy-demo
@@ -56,7 +56,9 @@ go run ./cmd/agentos-policy-demo
 
 This executable tests real gate paths with synthetic in-memory effects only; it performs no migration, provider control or model call. [Trust boundary, integration and limitations](docs/architecture/governance.md).
 
-An experimental [owned provider check harness](docs/architecture/adapter-gates.md) connects these gates to Codex/Claude CLI runners. Offline gates and fixed synthetic goals pass for both pinned provider versions. This is not general coding-task acceptance. Fleet remains read-only. OpenClaw stays optional.
+An experimental [owned provider check harness](docs/architecture/adapter-gates.md) connects these gates to Codex/Claude CLI runners. Offline gates and fixed synthetic goals pass for both pinned provider versions. This is not general coding-task acceptance. Fleet observation remains read-only. OpenClaw stays optional.
+
+[Real project submission review](docs/architecture/project-task-review.md) verifies operator-selected output hashes and executes required project tests. Passing evidence remains pending until explicit operator confirmation in the local terminal or the configured Fleet review panel; source/output/test changes invalidate it. No model call is required.
 
 ## Development checks
 

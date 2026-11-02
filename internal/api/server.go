@@ -8,12 +8,14 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/fs"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/Aazernajaf/agentos/internal/fleet"
+	"github.com/Aazernajaf/agentos/internal/projecttask"
 )
 
 type Server struct {
@@ -23,6 +25,22 @@ type Server struct {
 	cookieName string
 	files      http.Handler
 	web        fs.FS
+	task       *projecttask.Task
+	reviewer   *projecttask.Reviewer
+	csrf       string
+}
+
+// EnableReview is host configuration, never an HTTP/agent registration path.
+// Call only before serving requests, with a live verified task held in memory.
+func (s *Server) EnableReview(task *projecttask.Task, reviewer *projecttask.Reviewer) error {
+	secret := make([]byte, 32)
+	if _, err := rand.Read(secret); err != nil {
+		return err
+	}
+	s.task = task
+	s.reviewer = reviewer
+	s.csrf = hex.EncodeToString(secret)
+	return nil
 }
 
 func New(store *fleet.Store, host string, web fs.FS) (*Server, error) {
@@ -45,7 +63,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Local origin required", http.StatusForbidden)
 		return
 	}
-	if r.Method != http.MethodGet {
+	if r.Method != http.MethodGet && !(r.Method == http.MethodPost && r.URL.Path == "/v0/review/approve" && s.reviewer != nil) {
 		w.Header().Set("Allow", "GET")
 		http.Error(w, "Read-only service", http.StatusMethodNotAllowed)
 		return
@@ -57,6 +75,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		switch r.URL.Path {
+		case "/v0/review", "/v0/review/approve":
+			s.review(w, r)
 		case "/v0/fleet":
 			w.Header().Set("Content-Type", "application/json")
 			_ = json.NewEncoder(w).Encode(s.store.Snapshot())
@@ -91,6 +111,59 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	s.files.ServeHTTP(w, r)
+}
+
+func (s *Server) review(w http.ResponseWriter, r *http.Request) {
+	if s.task == nil || s.reviewer == nil {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	if r.URL.Path == "/v0/review" {
+		_ = json.NewEncoder(w).Encode(struct {
+			Report projecttask.Report `json:"report"`
+			CSRF   string             `json:"csrf"`
+		}{s.task.Report(), s.csrf})
+		return
+	}
+	if r.Method != http.MethodPost {
+		http.Error(w, "POST required", 405)
+		return
+	}
+	if r.Header.Get("Origin") != "http://"+s.host || r.Header.Get("Sec-Fetch-Site") != "same-origin" || r.Header.Get("Content-Type") != "application/json" || subtle.ConstantTimeCompare([]byte(r.Header.Get("X-AgentOS-CSRF")), []byte(s.csrf)) != 1 {
+		http.Error(w, "Operator origin required", 403)
+		return
+	}
+	d := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1024))
+	first, err := d.Token()
+	if err != nil || first != json.Delim('{') {
+		http.Error(w, "Invalid approval", 400)
+		return
+	}
+	key, err := d.Token()
+	if err != nil || key != "review_id" {
+		http.Error(w, "Invalid approval", 400)
+		return
+	}
+	var id string
+	if d.Decode(&id) != nil {
+		http.Error(w, "Invalid approval", 400)
+		return
+	}
+	end, err := d.Token()
+	if err != nil || end != json.Delim('}') {
+		http.Error(w, "Invalid approval", 400)
+		return
+	}
+	if _, err := d.Token(); err != io.EOF {
+		http.Error(w, "Invalid approval", 400)
+		return
+	}
+	if err := s.reviewer.Approve(id); err != nil {
+		http.Error(w, "Evidence changed, expired or approval already used", 409)
+		return
+	}
+	_ = json.NewEncoder(w).Encode(s.task.Report())
 }
 
 func (s *Server) events(w http.ResponseWriter, r *http.Request) {
