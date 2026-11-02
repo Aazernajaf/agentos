@@ -18,7 +18,7 @@ No invented pass, skipped-failure concealment, weakened assertion, real private 
 2. Reuse prior checks only for unchanged relevant inputs/revision. Invalidate affected evidence after code, configuration, dependency or source-version changes.
 3. Select the smallest relevant existing checks: documentation/skill packages use their link/integrity checks; Go boundaries use tests/vet; frontend changes use strict typecheck/build and appropriate UI checks; ingress/server changes use synthetic built-server smoke.
 4. For broad runtime changes, apply the repository's full relevant check set. Mark unavailable tooling and unconfigured CI explicitly instead of silently installing tools.
-5. Inspect outcomes and artifacts. Fix authorized failures, then repeat affected checks once there is a material reason. Keep total budgets across retries.
+5. For host-managed task acceptance, use [the kernel](../../../docs/architecture/governance.md) to run registered required checks and validate the current receipt/review policy. A provider completion message or test JSON is not a receipt; native tools remain outside this boundary until integrated. Inspect outcomes and artifacts. Fix authorized failures, then repeat affected checks once there is a material reason. Keep total budgets across retries.
 6. Before an authorized push, inspect staged scope, exclude private scratch/build/credential material, and verify current remote state. Push only within the session's authorization and risk limits.
 
 ## Stop or hold

@@ -13,3 +13,5 @@ If private reporting is unavailable, open a minimal public issue asking the main
 ## Development boundaries
 
 See the [threat model](docs/security/threat-model.md). Observation does not authorize control. Provider permission prompts must remain intact. Verification commands execute repository-controlled code and require an explicitly trusted execution context. Redact before persistence, and keep real credentials and session content out of test fixtures and logs.
+
+The [governance kernel](docs/architecture/governance.md) separates agent intent from host authority for registered callbacks. Integrating hosts must authenticate/route callers, keep Operator private, supply real input revisions/checks and isolate executors. It is not an OS sandbox or restart-safe permission store. Live Fleet exposes no operator/grant endpoints.

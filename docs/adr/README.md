@@ -9,5 +9,6 @@
 | [003](003-outcomes-and-evidence.md) | Accepted direction | Separate activity, workload, progress, acceptance |
 | [004](004-storage-and-licensing.md) | Proposed / unresolved | Storage implementation and license selection |
 | [005](005-read-only-fleet-preview.md) | Implemented preview | Bounded read-only local Fleet slice |
+| [006](006-permission-and-completion-kernel.md) | Implemented kernel | Host authority, registered operations and completion receipts |
 
 New ADRs should state context, decision/status, alternatives, consequences, evidence, and unresolved questions. Supersede rather than silently rewrite historical decisions.

@@ -11,6 +11,7 @@ Planned layout (create source directories only when they hold real implementatio
 ```text
 cmd/agentos/          Go entry point
 internal/api/        HTTP boundary, validation, local session security
+internal/governance/ Implemented in-process operation and acceptance gates
 internal/agents/     Registry, sessions, capability observations
 internal/events/     Normalization, journal, projections, replay
 internal/tasks/      Scope, assignments, dependencies, transitions
@@ -39,3 +40,5 @@ SQLite is the local candidate; PostgreSQL belongs to a later server-mode decisio
 ## Open decisions
 
 Toolchain versions, frontend tooling beyond React/TS, storage driver, API schema tooling, event retention, local auth bootstrap, supported provider version ranges, and distribution packaging remain unselected. Each dependency requires approval. No install script, container image, CI platform, or runtime skeleton is implied by this document.
+
+The [permission/completion kernel](governance.md) is an implemented, separate host-facing boundary. It does not change Fleet observation semantics or expose mutation endpoints.

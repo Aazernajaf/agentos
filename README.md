@@ -46,6 +46,16 @@ Open the printed loopback URL. Demo sessions are synthetic; no provider account 
 
 ![Live Fleet synthetic demo with Claude Code and Codex](docs/images/live-fleet.png)
 
+## Permission and completion kernel
+
+A separate Go kernel gates registered operations and task acceptance: scoped authority, exact approvals, pinned skill/SOP/policy versions, trusted checks, revision-bound receipts and explicit review policy. It does not intercept external CLI tools or add write/control routes to the read-only Fleet.
+
+```sh
+go run ./cmd/agentos-policy-demo
+```
+
+This executable tests real gate paths with synthetic in-memory effects only; it performs no migration, provider control or model call. [Trust boundary, integration and limitations](docs/architecture/governance.md).
+
 ## Development checks
 
 ```sh
@@ -64,6 +74,7 @@ Go uses only its standard library. Frontend packages are pinned in a lockfile. S
 
 ## Documentation
 
+- [Permission and completion kernel](docs/architecture/governance.md)
 - [Agent operating rules, skills and SOPs](docs/agents/skills.md)
 - [Live Fleet preview: run, connect, security and API](docs/architecture/live-fleet.md)
 - [Product scope and roadmap](docs/product/strategy.md)

@@ -1,6 +1,6 @@
 # Agent operating policy
 
-Applies to AgentOS work by Codex, Claude Code, Antigravity CLI and future adapters. Follow higher-priority instructions and the user's current authorization. This policy and the skills are instructions, not a runtime permission engine or a guarantee of model behavior.
+Applies to AgentOS work by Codex, Claude Code, Antigravity CLI and future adapters. Follow higher-priority instructions and the user's current authorization. This policy and the skills are instructions, not a guarantee of model behavior. The [in-process kernel](../architecture/governance.md) now enforces named operation and acceptance checks for host-routed calls; it does not intercept all external tools or interpret every policy sentence.
 
 ## Keep the active assignment explicit
 

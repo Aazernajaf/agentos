@@ -17,7 +17,7 @@ No unrelated refactor, speculative feature, invented task status, silent depende
 1. Identify the smallest complete slice and its observable acceptance criteria; distinguish implemented behavior from planned modules.
 2. Check repository status, relevant contracts and previous results. Record why any completed area needs revisiting.
 3. Implement within scope. Ask before a new dependency or protected action; continue independent work while awaiting it.
-4. Preserve explicit session/workspace attribution, unknown/stale semantics and metadata-only privacy boundaries. Keep observation separate from control and execution separate from task acceptance.
+4. For host-routed operations, use [the governance kernel](../../../docs/architecture/governance.md): keep Operator authority and handler registration outside agent input; do not bypass Dispatch or import check claims. This does not grant access to external tools. Preserve explicit session/workspace attribution, unknown/stale semantics and metadata-only privacy boundaries. Keep observation separate from control and execution separate from task acceptance.
 5. Select affected checks with the verification SOP. Inspect the final diff, correct actual failures and rerun only affected checks.
 6. Maintain documentation/API behavior and handoff to match what actually ships. Before an authorized push, check the staged scope and remote state. Do not treat this skill as push/deploy/release authorization.
 
